@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_app/screens/main_page.dart';
-import 'package:learning_app/custom_internal.dart';
+import 'package:flutter/services.dart';
+import 'package:learning_app/screens/auth/main_page.dart';
+import 'package:learning_app/screens/course_list_page.dart';
+import 'package:learning_app/screens/internals/custom_internal.dart';
+
+import 'home.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -8,21 +13,23 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     Future.delayed(
       Duration(
         seconds: 5,
       ),
-          () {
+      () {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => MainPage(),
-            ), (e) => false
-        );
+              builder: (context) => _checkState(),
+            ),
+            (e) => false);
       },
     );
   }
@@ -30,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-
+    checkTheme(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -83,5 +90,23 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+}
 
+Widget _checkState() {
+  return StreamBuilder(
+    stream: FirebaseAuth.instance.onAuthStateChanged,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return loading();
+      } else {
+        if (snapshot.hasData) {
+          return HomePage(
+            mFirebaseUser: snapshot.data,
+          );
+        } else {
+          return MainPage();
+        }
+      }
+    },
+  );
 }

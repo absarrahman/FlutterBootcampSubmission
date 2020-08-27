@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:learning_app/custom_internal.dart';
-import 'package:learning_app/screens/login_screen.dart';
+import 'package:flutter/services.dart';
+import 'package:learning_app/screens/auth/login_screen.dart';
+import 'package:learning_app/screens/auth/signup_account.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -29,32 +30,33 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset("assets/images/main_page.png",
-              height: screenHeight*0.4,
-              width: screenHeight*0.4,
-            ),
-            SizedBox(
-              height: screenHeight*0.01,
-            ),
-            Text(
-              "Welcome",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.bold,
+        height: screenHeight*0.9,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset("assets/images/main_page.png",
+                height: screenHeight*0.4,
+                width: screenHeight*0.4,
               ),
-            ),
-            SizedBox(
-              height: screenHeight*0.15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  child: Container(
+              SizedBox(
+                height: screenHeight*0.01,
+              ),
+              Text(
+                "Welcome",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: screenHeight*0.15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
                     alignment: Alignment.centerLeft,
                     child: ButtonTheme(
                       minWidth: 130.0,
@@ -73,15 +75,8 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                   ),
-                  padding: EdgeInsets.only(
-                    left: 50.0,
-                  ),
-                ),
-                Spacer(
-                  flex: 1,
-                ),
-                Padding(
-                  child: Container(
+
+                  Container(
                     alignment: Alignment.centerRight,
                     child: ButtonTheme(
                       minWidth: 130.0,
@@ -93,20 +88,17 @@ class _MainPageState extends State<MainPage> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        onPressed: () => {},
+                        onPressed: () => signUp(),
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
                       ),
                     ),
                   ),
-                  padding: EdgeInsets.only(
-                    right: 50.0,
-                  ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -117,6 +109,15 @@ class _MainPageState extends State<MainPage> {
       context,
       MaterialPageRoute(
         builder: (context) => LoginPage(),
+      ),
+    );
+  }
+
+  signUp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignUp(),
       ),
     );
   }
