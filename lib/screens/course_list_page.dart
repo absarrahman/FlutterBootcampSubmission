@@ -12,7 +12,7 @@ class CourseListPage extends StatefulWidget {
 }
 
 class _CourseListPageState extends State<CourseListPage> {
-  var screenHeight, screenWidth;
+  var screenHeight, screenWidth, list;
   Widget imageShow;
 
 
@@ -37,7 +37,7 @@ class _CourseListPageState extends State<CourseListPage> {
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return loading();
         } else {
-          final list = snapshot.data.documents.toList();
+          list = snapshot.data.documents.toList();
           return Scaffold(
             body: CustomScrollView(
               slivers: <Widget>[
@@ -73,73 +73,12 @@ class _CourseListPageState extends State<CourseListPage> {
                 ),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => _logOut(),
-              child: Text("*"),
-            ),
           );
         }
       },
     );
   }
 
-/*  @override
-  Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection("Courses").snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              print("Error");
-              return Text("Error");
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return loading();
-            } else {
-              final list = snapshot.data.documents.toList();
-              return CustomScrollView(
-                slivers: <Widget>[
-                  SliverAppBar(
-                    backgroundColor: Color(0xff3c5a73),
-                    leading: IconButton(
-                      color: Colors.white,
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.of(context).pop(),
-                    ),
-                    floating: false,
-                    pinned: true,
-                    expandedHeight: 160.0,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Image.asset(
-                        "assets/images/home_page_background.png",
-                        fit: BoxFit.cover,
-                      ),
-                      */ /*title: Text(
-                        nameOfUser != null ? "Hey $nameOfUser ," : "",
-                        style: TextStyle(
-                          backgroundColor: Color(0xff3c5a73),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),*/ /*
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (builder, index) => _courseCard(list, index),
-                      childCount: list.length,
-                    ),
-                  ),
-                ],
-              );
-            }
-          }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _logOut(),
-        child: Text("*"),
-      ),
-    );
-  }*/
 
   Widget _courseCard(List list, int index) {
     return Padding(
@@ -200,13 +139,4 @@ class _CourseListPageState extends State<CourseListPage> {
     );
   }
 
-  _logOut() {
-    FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MainPage(),
-      ),
-    );
-  }
 }

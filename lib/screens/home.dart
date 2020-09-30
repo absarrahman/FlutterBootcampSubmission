@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           "Hey $nameOfUser ,",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
+                              fontWeight: FontWeight.bold, fontSize: 25),
                         ),
                       ),
                     ),
@@ -82,56 +82,60 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 20,
                     ),
-                    InkWell(
-                      onTap: () => routeToCourse(),
+                    Expanded(
                       child: Center(
                         child: Container(
                           height: screenHeight * 0.15,
                           width: screenWidth * 0.9,
-                          child: Material(
-                            elevation: 7,
-                            color:
-                                isDark ? Color(0xffffac41) : Color(0xffffc4d0),
-                            borderOnForeground: true,
-                            borderRadius: BorderRadius.circular(20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.book_rounded,
-                                    size: 30,
+                          child: InkWell(
+                            onTap: () => routeToCourse(),
+                            child: Material(
+                              elevation: 7,
+                              color:
+                              isDark
+                                  ? Color(0xfff76b8a)
+                                  : Color(0xffff570c),
+                              borderOnForeground: true,
+                              borderRadius: BorderRadius.circular(20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Icon(
+                                      Icons.book_rounded,
+                                      size: 30,
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Text(
-                                    "Check our available courses",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                )
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      "Check our available courses",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                     Expanded(
-                      child: InkWell(
-                        onTap: () => _yourAccount(),
-                        child: Center(
-                          child: Container(
-                            height: screenHeight * 0.15,
-                            width: screenWidth * 0.9,
+                      child: Center(
+                        child: Container(
+                          height: screenHeight * 0.15,
+                          width: screenWidth * 0.9,
+                          child: InkWell(
+                            onTap: () => _yourAccount(),
                             child: Material(
                               elevation: 7,
                               color: isDark
-                                  ? Color(0xffffac41)
-                                  : Color(0xffffc4d0),
+                                  ? Color(0xfff76b8a)
+                                  : Color(0xffff570c),
                               borderOnForeground: true,
                               borderRadius: BorderRadius.circular(20),
                               child: Row(
@@ -168,17 +172,24 @@ class _HomePageState extends State<HomePage> {
           );
   }
 
-  _yourAccount() {
+  _yourAccount() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final uid = user.uid;
+    final DocumentSnapshot documentSnapshot =
+    await Firestore.instance.collection("Users").document(uid).get();
+    final list = documentSnapshot.data;
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AccountPage(),
+        builder: (context) => AccountPage(
+          accountDetails: list,
+        ),
       ),
     );
   }
 
   _exitDialogue() {
-    return showDialog(
+    showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(

@@ -84,10 +84,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => changeBrightness(context),
-      ),
     );
   }
 }

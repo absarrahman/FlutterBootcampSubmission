@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
 class RadialProgress extends StatefulWidget {
-  final double goalCompleted = 0.7;
+  final double goalCompletedRatio; // 0-1
+  final int completedCourse;
+
+  RadialProgress({@required this.goalCompletedRatio, @required this.completedCourse});
 
   @override
   _RadialProgressState createState() => _RadialProgressState();
@@ -27,7 +30,7 @@ class _RadialProgressState extends State<RadialProgress>
         parent: _radialProgressAnimationController, curve: Curves.easeIn))
       ..addListener(() {
         setState(() {
-          progressDegrees = widget.goalCompleted * _progressAnimation.value;
+          progressDegrees = widget.goalCompletedRatio * _progressAnimation.value;
         });
       });
 
@@ -53,8 +56,8 @@ class _RadialProgressState extends State<RadialProgress>
           child: Column(
             children: <Widget>[
               Text(
-                'RUNNING',
-                style: TextStyle(fontSize: 24.0, letterSpacing: 1.5),
+                'Your Progress',
+                style: TextStyle(fontSize: 20.0, letterSpacing: 1.5),
               ),
               SizedBox(
                 height: 4.0,
@@ -70,11 +73,11 @@ class _RadialProgressState extends State<RadialProgress>
                 height: 10.0,
               ),
               Text(
-                '1.225',
+                "${widget.completedCourse}",
                 style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
               ),
               Text(
-                'CALORIES BURN',
+                (widget.completedCourse==1)?"Course Completed":"Courses Completed",
                 style: TextStyle(
                     fontSize: 14.0, color: Colors.blue, letterSpacing: 1.5),
               ),

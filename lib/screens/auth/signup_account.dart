@@ -134,7 +134,7 @@ class _SignUpState extends State<SignUp> {
         Firestore.instance
             .collection('Users')
             .document(user.uid)
-            .setData(User(_name, _email).toJson())
+            .setData(User(_name, _email,0, 0).toJson())
             .catchError((e) {
           debugPrint(e.toString());
         });
